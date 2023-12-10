@@ -1,54 +1,55 @@
 {
-  "name": "helgesverre/ai",
-  "description": "Simple OpenAI Wrapper",
-  "keywords": [
-    "openai",
-    "ai",
-    "wrapper"
-  ],
-  "homepage": "https://github.com/helgesverre/ai",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Helge Sverre",
-      "email": "helge.sverre@gmail.com",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "php": "^8.2",
-    "openai-php/laravel": "^0.7.0",
-    "spatie/laravel-package-tools": "^1.14.0"
-  },
-  "require-dev": {
-    "laravel/pint": "^1.0",
-    "nunomaduro/collision": "^7.8"
-  },
-  "autoload": {
-    "psr-4": {
-      "HelgeSverre\\AI\\": "src/"
-    }
-  },
-  "scripts": {
-    "format": "vendor/bin/pint"
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "HelgeSverre\\AI\\AIServiceProvider"
-      ],
-      "aliases": {
-        "AI": "HelgeSverre\\AI\\Facades\\AI"
-      }
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "helgesverre/brain",
+    "description": "The Adorably Simple OpenAI Wrapper",
+    "keywords": [
+        "openai",
+        "ai",
+        "wrapper",
+        "brain"
+    ],
+    "homepage": "https://github.com/helgesverre/brain",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Helge Sverre",
+            "email": "helge.sverre@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "openai-php/laravel": "^0.7.0",
+        "spatie/laravel-package-tools": "^1.14.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "HelgeSverre\\Brain\\": "src/"
+        }
+    },
+    "scripts": {
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ServiceProvider"
+            ],
+            "aliases": {
+                "Brain": "HelgeSverre\\Brain\\Facades\\Brain"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

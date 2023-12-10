@@ -1,14 +1,14 @@
 <?php
 
-namespace HelgeSverre\AI;
+namespace HelgeSverre\Brain;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class AIServiceProvider extends PackageServiceProvider
+class ServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('ai');
+        $package->name('brain');
     }
 }

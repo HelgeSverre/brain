@@ -1,16 +1,16 @@
 <?php
 
-namespace HelgeSverre\AI\Facades;
+namespace HelgeSverre\Brain\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @mixin \HelgeSverre\AI\AI
+ * @mixin \HelgeSverre\Brain\Brain
  */
-class AI extends Facade
+class Brain extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \HelgeSverre\AI\AI::class;
+        return \HelgeSverre\Brain\Brain::class;
     }
 }

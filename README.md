@@ -1,17 +1,25 @@
-<p align="center"><img src="art/header-1.webp"></p>
+<p align="center"><img src="art/brain.webp"></p>
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/helgesverre/ai.svg?style=flat-square) ![Total Downloads](https://img.shields.io/packagist/dt/helgesverre/ai.svg?style=flat-square)
 
-# AI - Simple OpenAI Wrapper
+## 📜 License
 
-Just a simple wrapper around the OpenAI SDK to make it easier to do quick-n-dirty GenAI-stuff.
+This package is licensed under the MIT License. For more details, refer to the [License File](LICENSE.md).
+
+---
+
+These badges add a playful and visually appealing element to your README, making it more engaging for viewers.
+
+# 🧠 Brain - The Adorably Simple OpenAI Wrapper
+
+Just a small and simple wrapper around the OpenAI SDK.
 
 ----
 
 ## 📦 Installation
 
 ```shell
-composer require helgesverre/ai
+composer require helgesverre/brain
 ```
 
 ```shell
@@ -25,17 +33,17 @@ OPENAI_REQUEST_TIMEOUT=60
 
 ## 📖 Method Documentation
 
-| Method              | Parameters                                   | Description                                                                                                                                                                          |
-|---------------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `AI::maxTokens()`   | `int $maxTokens`                             | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
-| `AI::temperature()` | `float $temperature`                         | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
-| `AI::fast()`        | *None*                                       | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
-| `AI::slow()`        | *None*                                       | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
-| `AI::text()`        | `$prompt, ?int $max = null`                  | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
-| `AI::json()`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
-| `AI::list()`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
-| `AI::toText()`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
-| `AI::toJson()`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
+| Method                 | Parameters                                   | Description                                                                                                                                                                          |
+|------------------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Brain::maxTokens()`   | `int $maxTokens`                             | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
+| `Brain::temperature()` | `float $temperature`                         | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
+| `Brain::fast()`        | *None*                                       | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
+| `Brain::slow()`        | *None*                                       | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
+| `Brain::text()`        | `$prompt, ?int $max = null`                  | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
+| `Brain::json()`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
+| `Brain::list()`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
+| `Brain::toText()`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
+| `Brain::toJson()`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
 
 ## 🛠 Usage
 
@@ -45,7 +53,7 @@ After installation, set up the AI Facade in `config/app.php`:
 
 ```php
 'aliases' => [
-    'AI' => HelgeSverre\AI\Facades\AI::class,
+    'AI' => HelgeSverre\Brain\Facades\Brain::class,
 ],
 ```
 
@@ -54,12 +62,12 @@ After installation, set up the AI Facade in `config/app.php`:
 Generate a list of blog titles about a given subject:
 
 ```php
-use HelgeSverre\AI\Facades\AI;
+use HelgeSverre\Brain\Facades\Brain;
 
 $subject = 'Technology';
 $count = 5;
 
-$titles = AI::list("Suggest $count blog titles about '$subject'", 200);
+$titles = Brain::list("Suggest $count blog titles about '$subject'", 200);
 
 foreach ($titles as $title) {
     echo $title . PHP_EOL;
@@ -71,13 +79,13 @@ foreach ($titles as $title) {
 Generate a structured blog post in JSON format:
 
 ```php
-use HelgeSverre\AI\Facades\AI;
+use HelgeSverre\Brain\Facades\Brain;
 
 $title = 'The Future of Technology';
 $style = 'informative';
 $minWords = 500;
 
-$response = AI::slow()->json(<<<PROMPT
+$response = Brain::slow()->json(<<<PROMPT
 Create an $style blog post with the title '$title'. 
 Write over $minWords words.
 PROMPT

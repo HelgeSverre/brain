@@ -1,13 +1,13 @@
 <?php
 
-namespace HelgeSverre\AI;
+namespace HelgeSverre\Brain;
 
 use Illuminate\Support\Arr;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
 use Throwable;
 
-class AI
+class Brain
 {
     const FAST_MODEL = 'gpt-3.5-turbo-1106';
 
