@@ -43,7 +43,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ServiceProvider"
+                "HelgeSverre\\AI\\ServiceProvider"
             ],
             "aliases": {
                 "Brain": "HelgeSverre\\Brain\\Facades\\Brain"
