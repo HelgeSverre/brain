@@ -23,6 +23,20 @@ OPENAI_API_KEY="your-key-here"
 OPENAI_REQUEST_TIMEOUT=60
 ```
 
+## 📖 Method Documentation
+
+| Method        | Parameters                                   | Description                                                                                                                                                                          |
+|---------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `maxTokens`   | `int $maxTokens`                             | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
+| `temperature` | `float $temperature`                         | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
+| `fast`        | *None*                                       | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
+| `slow`        | *None*                                       | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
+| `text`        | `$prompt, ?int $max = null`                  | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
+| `json`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
+| `list`        | `$prompt, ?int $max = null`                  | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
+| `toText`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
+| `toJson`      | `CreateResponse $response, $fallback = null` | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
+
 ## 🛠 Usage
 
 ### 🔧 Basic Setup
