@@ -45,7 +45,7 @@ After installation, set up the AI Facade in `config/app.php`:
 
 ```php
 'aliases' => [
-    'AI' => HelgeSverre\Brain\Facades\Brain::class,
+    'Brain' => HelgeSverre\Brain\Facades\Brain::class,
 ],
 ```
 
