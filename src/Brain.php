@@ -47,7 +47,7 @@ class Brain
         return $this;
     }
 
-    public function text($prompt, ?int $max = null): string
+    public function text($prompt, ?int $max = null, bool $fast = true): string
     {
         return self::toText(OpenAI::chat()->create([
             'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
@@ -59,11 +59,11 @@ class Brain
         ]));
     }
 
-    public function json($prompt, ?int $max = null): ?array
+    public function json($prompt, ?int $max = null, bool $fast = true): ?array
     {
         try {
             $response = OpenAI::chat()->create([
-                'model' => $this->model,
+                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
@@ -82,7 +82,7 @@ class Brain
     {
         try {
             $response = OpenAI::chat()->create([
-                'model' => $this->model,
+                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
