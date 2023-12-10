@@ -2,14 +2,6 @@
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/helgesverre/ai.svg?style=flat-square) ![Total Downloads](https://img.shields.io/packagist/dt/helgesverre/ai.svg?style=flat-square)
 
-## 📜 License
-
-This package is licensed under the MIT License. For more details, refer to the [License File](LICENSE.md).
-
----
-
-These badges add a playful and visually appealing element to your README, making it more engaging for viewers.
-
 # 🧠 Brain - The Adorably Simple OpenAI Wrapper
 
 Just a small and simple wrapper around the OpenAI SDK.
