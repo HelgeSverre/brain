@@ -2,6 +2,8 @@
 
 ![Latest Version on Packagist](https://img.shields.io/packagist/v/helgesverre/ai.svg?style=flat-square) ![Total Downloads](https://img.shields.io/packagist/dt/helgesverre/ai.svg?style=flat-square)
 
+# AI - Simple OpenAI Wrapper
+
 Just a simple wrapper around the OpenAI SDK to make it easier to do quick-n-dirty GenAI-stuff.
 
 ----
