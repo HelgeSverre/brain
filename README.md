@@ -1,6 +1,6 @@
 <p align="center"><img src="art/brain.webp"></p>
 
-![Latest Version on Packagist](https://img.shields.io/packagist/v/helgesverre/ai.svg?style=flat-square) ![Total Downloads](https://img.shields.io/packagist/dt/helgesverre/ai.svg?style=flat-square)
+![Latest Version on Packagist](https://img.shields.io/packagist/v/helgesverre/brain.svg?style=flat-square) ![Total Downloads](https://img.shields.io/packagist/dt/helgesverre/brain.svg?style=flat-square)
 
 # 🧠 Brain - The Adorably Simple OpenAI Wrapper
 
