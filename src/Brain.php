@@ -3,8 +3,10 @@
 namespace HelgeSverre\Brain;
 
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
+use StringBackedEnum;
 use Throwable;
 
 class Brain
@@ -97,6 +99,49 @@ class Brain
             return Arr::get(self::toJson($response), 'items');
         } catch (Throwable) {
             return [];
+        }
+    }
+
+    public function classify(string $input, array|StringBackedEnum $classes, ?int $max = null, bool $fast = true): null|string|StringBackedEnum
+    {
+        if (is_array($classes)) {
+            $values = $classes;
+            $isEnum = false;
+        } elseif ($classes instanceof StringBackedEnum) {
+            $values = array_column($classes::cases(), 'value');
+            $isEnum = true;
+        } else {
+            throw new InvalidArgumentException('classes provided is not an array, nor an enum.');
+        }
+
+        try {
+            $response = OpenAI::chat()->create([
+                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
+                'max_tokens' => $max ?? $this->maxTokens,
+                'temperature' => $this->temperature,
+                'response_format' => ['type' => 'json_object'],
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => implode("\n", [
+                            "Classify '$input' into one of the following classifications:".
+                            implode(', ', $values).
+                            "The output should a JSON object with the key of 'classification' and the selected classification as the sole value:",
+                        ]),
+                    ],
+                ],
+            ]);
+
+            $classification = Arr::get(self::toJson($response), 'classification');
+
+            if ($isEnum) {
+                return $classes::tryFrom($classification);
+            }
+
+            return $classification;
+
+        } catch (Throwable) {
+            return null;
         }
     }
 
