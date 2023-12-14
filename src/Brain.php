@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
-use StringBackedEnum;
 use Throwable;
 
 class Brain
@@ -102,12 +101,12 @@ class Brain
         }
     }
 
-    public function classify(string $input, array|StringBackedEnum $classes, ?int $max = null, bool $fast = true): null|string|StringBackedEnum
+    public function classify(string $input, $classes, ?int $max = null, bool $fast = true)
     {
         if (is_array($classes)) {
             $values = $classes;
             $isEnum = false;
-        } elseif ($classes instanceof StringBackedEnum) {
+        } elseif (enum_exists($classes)) {
             $values = array_column($classes::cases(), 'value');
             $isEnum = true;
         } else {
