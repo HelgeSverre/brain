@@ -42,3 +42,12 @@ it('It can classify something with enum', function () {
 
     expect($result)->toEqual(Category::fruit);
 });
+
+it('it can roast its creator', function () {
+
+    $result = $this->brain->fast()->classify('helge', [
+        'lazy', 'fairly competent', '10x engineer',
+    ]);
+
+    dd($result);
+});

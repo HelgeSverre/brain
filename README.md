@@ -23,26 +23,11 @@ OPENAI_API_KEY="your-key-here"
 OPENAI_REQUEST_TIMEOUT=60
 ```
 
-## 📖 Method Documentation
-
-| Method                 | Parameters                                     | Description                                                                                                                                                                          |
-|------------------------|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Brain::maxTokens()`   | `int $maxTokens`                               | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
-| `Brain::temperature()` | `float $temperature`                           | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
-| `Brain::fast()`        | *None*                                         | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
-| `Brain::slow()`        | *None*                                         | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
-| `Brain::text()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
-| `Brain::json()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
-| `Brain::list()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
-| `Brain::classify()`    | `$input, $categories`                          | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
-| `Brain::toText()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
-| `Brain::toJson()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
-
 ## 🛠 Usage
 
 ### 🔧 Basic Setup
 
-After installation, set up the AI Facade in `config/app.php`:
+After installation, set up the Brain Facade in `config/app.php`:
 
 ```php
 'aliases' => [
@@ -127,6 +112,21 @@ $result = Brain::fast()->classify($input, Category::class);
 ```
 
 Here, 'banana' is classified into the most fitting Enum category.
+
+## 📖 Method Documentation
+
+| Method                 | Parameters                                     | Description                                                                                                                                                                          |
+|------------------------|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Brain::maxTokens()`   | `int $maxTokens`                               | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
+| `Brain::temperature()` | `float $temperature`                           | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
+| `Brain::fast()`        | *None*                                         | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
+| `Brain::slow()`        | *None*                                         | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
+| `Brain::text()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
+| `Brain::json()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
+| `Brain::list()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
+| `Brain::classify()`    | `$input, $categories`                          | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
+| `Brain::toText()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
+| `Brain::toJson()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
 
 ## 📜 License
 
