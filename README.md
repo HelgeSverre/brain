@@ -34,6 +34,7 @@ OPENAI_REQUEST_TIMEOUT=60
 | `Brain::text()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
 | `Brain::json()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
 | `Brain::list()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
+| `Brain::classify()`    | `$input, $categories`                          | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
 | `Brain::toText()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
 | `Brain::toJson()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
 
@@ -86,6 +87,46 @@ PROMPT
 echo "Title: " . $response['title'] . PHP_EOL;
 echo "Body: " . $response['body'] . PHP_EOL;
 ```
+
+### 📄 Example: Text Classification with Arrays or Enums
+
+`Brain::classify` simplifies the categorization of text. You can classify text using either an array of options or an
+Enum class.
+
+#### Array Classification
+
+Pass a list of categories as an array to classify your text.
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+$input = 'banana';
+$categories = ["bread", "animal", "car", "plane"];
+
+$result = Brain::fast()->classify($input, $categories);
+```
+
+This method evaluates 'banana' and categorizes it as one of the provided options.
+
+#### Enum Classification
+
+For structured categorization, use an Enum class.
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+enum Category: string {
+    case Fruit = 'fruit';
+    case Animal = 'animal';
+    case Car = 'car';
+}
+
+$input = 'banana';
+
+$result = Brain::fast()->classify($input, Category::class);
+```
+
+Here, 'banana' is classified into the most fitting Enum category.
 
 ## 📜 License
 
