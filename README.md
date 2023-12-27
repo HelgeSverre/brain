@@ -113,6 +113,27 @@ $result = Brain::fast()->classify($input, Category::class);
 
 Here, 'banana' is classified into the most fitting Enum category.
 
+### 📄 Example: Generating a Vector Embedding
+
+This method returns a vector embedding of the input, or a list of vector embeddings if you pass an array or a
+collection.
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+// Single embedding
+$result = Brain::embedding('banana');
+// Returns ['0.123', '0.456', '0.789' ....]
+
+// Or, for multiple inputs:
+$result = Brain::embedding(['banana', 'apple', 'orange']);
+// Returns [['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....]]
+
+// Or, for a collection of inputs:
+$result = Brain::embedding(collect(['banana', 'apple', 'orange']));
+// Returns [['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....]]
+```
+
 ## 📖 Method Documentation
 
 | Method                 | Parameters                                     | Description                                                                                                                                                                          |
@@ -125,6 +146,7 @@ Here, 'banana' is classified into the most fitting Enum category.
 | `Brain::json()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
 | `Brain::list()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
 | `Brain::classify()`    | `$input, $categories`                          | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
+| `Brain::embedding()`   | `$input`                                       | Uses the `text-embedding-ada-002` model to generate an embedding vector, returns a single vector for string input, an array of vectors when passed an array or collection.           |
 | `Brain::toText()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
 | `Brain::toJson()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
 

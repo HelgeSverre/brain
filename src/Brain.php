@@ -3,6 +3,7 @@
 namespace HelgeSverre\Brain;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
@@ -46,6 +47,20 @@ class Brain
         $this->model = self::SLOW_MODEL;
 
         return $this;
+    }
+
+    public function embedding(string|array|Collection $input): array
+    {
+        $response = OpenAI::embeddings()->create([
+            'model' => 'text-embedding-ada-002',
+            'input' => $input,
+        ]);
+
+        if (is_array($input) || $input instanceof Collection) {
+            return array_map(fn ($embedding) => $embedding->embedding, $response->embeddings);
+        } else {
+            return $response->embeddings[0]->embedding;
+        }
     }
 
     public function text($prompt, ?int $max = null, bool $fast = true): string
