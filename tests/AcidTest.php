@@ -58,7 +58,7 @@ it('it can embed multiple strings and get an array of flat embedding vector arra
         ->and($result[1])->toHaveCount(1536);
 });
 
-it('it can embed collection of stringsand get an array of flat embedding vector arrays back', function () {
+it('it can embed collection of strings and get an array of flat embedding vector arrays back', function () {
     $result = $this->brain->embedding(collect(['helge', 'sverre']));
 
     expect($result)->toBeArray()
