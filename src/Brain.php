@@ -15,11 +15,11 @@ class Brain
 
     const SLOW_MODEL = 'gpt-4-1106-preview';
 
-    public ?string $model = self::FAST_MODEL;
+    protected string $model = self::FAST_MODEL;
 
-    public int $maxTokens = 4096;
+    protected int $maxTokens = 4096;
 
-    public float $temperature = 0.5;
+    protected float $temperature = 0.5;
 
     public function maxTokens(int $maxTokens): self
     {
@@ -31,6 +31,13 @@ class Brain
     public function temperature(float $temperature): self
     {
         $this->temperature = $temperature;
+
+        return $this;
+    }
+
+    public function model(string $model): self
+    {
+        $this->model = $model;
 
         return $this;
     }
@@ -63,10 +70,10 @@ class Brain
         }
     }
 
-    public function text($prompt, ?int $max = null, bool $fast = true): string
+    public function text($prompt, ?int $max = null): string
     {
         return self::toText(OpenAI::chat()->create([
-            'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
+            'model' => $this->model,
             'max_tokens' => $max ?? $this->maxTokens,
             'temperature' => $this->temperature,
             'messages' => [
@@ -75,11 +82,11 @@ class Brain
         ]));
     }
 
-    public function json($prompt, ?int $max = null, bool $fast = true): ?array
+    public function json($prompt, ?int $max = null): ?array
     {
         try {
             $response = OpenAI::chat()->create([
-                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
+                'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
@@ -94,11 +101,11 @@ class Brain
         }
     }
 
-    public function list($prompt, ?int $max = null, bool $fast = true): array
+    public function list($prompt, ?int $max = null): array
     {
         try {
             $response = OpenAI::chat()->create([
-                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
+                'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
@@ -116,7 +123,7 @@ class Brain
         }
     }
 
-    public function classify(string $input, $classes, ?int $max = null, bool $fast = true)
+    public function classify(string $input, $classes, ?int $max = null)
     {
         if (is_array($classes)) {
             $values = $classes;
@@ -130,7 +137,7 @@ class Brain
 
         try {
             $response = OpenAI::chat()->create([
-                'model' => $this->model ?? $fast ? self::FAST_MODEL : self::SLOW_MODEL,
+                'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
