@@ -56,12 +56,21 @@ class Brain
         return $this;
     }
 
-    public function embedding(string|array|Collection $input): array
-    {
-        $response = OpenAI::embeddings()->create([
-            'model' => 'text-embedding-ada-002',
+    /**
+     * @param  string<"text-embedding-3-small"|"text-embedding-3-large"|"text-embedding-ada-002">  $model
+     */
+    public function embedding(
+        string|array|Collection $input,
+        string $model = 'text-embedding-3-small',
+        ?int $dimensions = 1536
+    ): array {
+        $params = array_filter([
+            'model' => $model,
             'input' => $input,
+            'dimensions' => $model == 'text-embedding-ada-002' ? null : $dimensions,
         ]);
+
+        $response = OpenAI::embeddings()->create($params);
 
         if (is_array($input) || $input instanceof Collection) {
             return array_map(fn ($embedding) => $embedding->embedding, $response->embeddings);

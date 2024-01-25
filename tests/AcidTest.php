@@ -37,9 +37,31 @@ it('It can classify something with enum', function () {
         case animal = 'animal';
         case car = 'car';
     }
+
     $result = $this->brain->fast()->classify('banana', Category::class);
 
     expect($result)->toEqual(Category::fruit);
+});
+
+it('it can embed a string and get flat embedding vector array back with text-embedding-ada-002', function () {
+    $result = $this->brain->embedding('helge sverre', model: 'text-embedding-ada-002');
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveCount(1536);
+});
+
+it('it can embed a string and get flat embedding vector array back with text-embedding-3-small', function () {
+    $result = $this->brain->embedding('helge sverre', model: 'text-embedding-3-small');
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveCount(1536);
+});
+
+it('it can embed a string and get flat embedding vector array back with text-embedding-3-large', function () {
+    $result = $this->brain->embedding('helge sverre', model: 'text-embedding-3-large');
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveCount(1536);
 });
 
 it('it can embed a string and get flat embedding vector array back', function () {
