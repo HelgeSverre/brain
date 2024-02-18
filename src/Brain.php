@@ -5,7 +5,7 @@ namespace HelgeSverre\Brain;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
-use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
 use Throwable;
 
@@ -20,6 +20,8 @@ class Brain
     protected int $maxTokens = 4096;
 
     protected float $temperature = 0.5;
+
+    protected ?string $baseUrl = null;
 
     public function maxTokens(int $maxTokens): self
     {
@@ -42,18 +44,81 @@ class Brain
         return $this;
     }
 
-    public function fast(): self
+    public function baseUrl(string $baseUrl): self
     {
-        $this->model = self::FAST_MODEL;
+        $this->baseUrl = $baseUrl;
 
         return $this;
     }
 
+    public function fast(): self
+    {
+        return $this->usingOpenAI()->model(self::FAST_MODEL);
+    }
+
     public function slow(): self
     {
-        $this->model = self::SLOW_MODEL;
+        return $this->usingOpenAI()->model(self::SLOW_MODEL);
+    }
+
+    public function usingOpenAI(): self
+    {
+        $this->baseUrl = 'api.openai.com/v1';
 
         return $this;
+    }
+
+    /**
+     * Use the Together.AI API.
+     *
+     * @see https://www.together.ai/
+     *
+     * @return $this
+     */
+    public function usingTogetherAI(): self
+    {
+        $this->baseUrl = 'api.together.xyz/v1';
+
+        return $this;
+    }
+
+    /**
+     * Use the Mistral.AI API.
+     *
+     * @see https://docs.mistral.ai/
+     *
+     * @return $this
+     */
+    public function usingMistralAI(): self
+    {
+        $this->baseUrl = 'api.mistral.ai/v1';
+
+        return $this;
+    }
+
+    /**
+     * Use the Perplexity API.
+     *
+     * @see https://docs.perplexity.ai/docs/getting-started
+     *
+     * @return $this
+     */
+    public function usingPerplexity(): self
+    {
+        $this->baseUrl = 'api.perplexity.ai';
+
+        return $this;
+    }
+
+    public function client()
+    {
+        return OpenAI::factory()
+            ->withApiKey(config('openai.api_key'))
+            ->withOrganization(config('openai.organization'))
+            ->withHttpHeader('OpenAI-Beta', 'assistants=v1')
+            ->withBaseUri($this->baseUrl ?: 'api.openai.com/v1')
+            ->withHttpClient(new \GuzzleHttp\Client(['timeout' => config('openai.request_timeout', 30)]))
+            ->make();
     }
 
     /**
@@ -70,7 +135,7 @@ class Brain
             'dimensions' => $model == 'text-embedding-ada-002' ? null : $dimensions,
         ]);
 
-        $response = OpenAI::embeddings()->create($params);
+        $response = $this->client()->embeddings()->create($params);
 
         if (is_array($input) || $input instanceof Collection) {
             return array_map(fn ($embedding) => $embedding->embedding, $response->embeddings);
@@ -81,20 +146,23 @@ class Brain
 
     public function text($prompt, ?int $max = null): string
     {
-        return self::toText(OpenAI::chat()->create([
+
+        $response = $this->client()->chat()->create([
             'model' => $this->model,
             'max_tokens' => $max ?? $this->maxTokens,
             'temperature' => $this->temperature,
             'messages' => [
                 ['role' => 'user', 'content' => $prompt],
             ],
-        ]));
+        ]);
+
+        return self::responseToText($response);
     }
 
     public function json($prompt, ?int $max = null): ?array
     {
         try {
-            $response = OpenAI::chat()->create([
+            $response = $this->client()->chat()->create([
                 'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
@@ -104,7 +172,7 @@ class Brain
                 ],
             ]);
 
-            return self::toJson($response);
+            return self::responseToJson($response);
         } catch (Throwable) {
             return null;
         }
@@ -113,7 +181,7 @@ class Brain
     public function list($prompt, ?int $max = null): array
     {
         try {
-            $response = OpenAI::chat()->create([
+            $response = $this->client()->chat()->create([
                 'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
@@ -126,7 +194,7 @@ class Brain
                 ],
             ]);
 
-            return Arr::get(self::toJson($response), 'items');
+            return Arr::get(self::responseToJson($response), 'items');
         } catch (Throwable) {
             return [];
         }
@@ -145,7 +213,7 @@ class Brain
         }
 
         try {
-            $response = OpenAI::chat()->create([
+            $response = $this->client()->chat()->create([
                 'model' => $this->model,
                 'max_tokens' => $max ?? $this->maxTokens,
                 'temperature' => $this->temperature,
@@ -162,7 +230,7 @@ class Brain
                 ],
             ]);
 
-            $classification = Arr::get(self::toJson($response), 'classification');
+            $classification = Arr::get(self::responseToJson($response), 'classification');
 
             if ($isEnum) {
                 return $classes::tryFrom($classification);
@@ -175,13 +243,22 @@ class Brain
         }
     }
 
-    public function toText(CreateResponse $response, $fallback = null): ?string
+    public function responseToText(CreateResponse $response, $fallback = null): ?string
     {
-        return rescue(fn () => $response->choices[0]->message->content, rescue: $fallback);
+        return rescue(
+            callback: fn () => $response->choices[0]->message->content,
+            rescue: $fallback
+        );
     }
 
-    public function toJson(CreateResponse $response, $fallback = null): ?array
+    public function responseToJson(CreateResponse $response, $fallback = null): ?array
     {
-        return rescue(fn () => json_decode(self::toText($response), associative: true), rescue: $fallback);
+        return rescue(
+            callback: fn () => json_decode(
+                json: self::responseToText($response),
+                associative: true
+            ),
+            rescue: $fallback
+        );
     }
 }

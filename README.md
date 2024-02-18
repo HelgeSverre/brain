@@ -134,21 +134,49 @@ $result = Brain::embedding(collect(['banana', 'apple', 'orange']));
 // Returns [['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....], ['0.123', '0.456', '0.789' ....]]
 ```
 
-## 📖 Method Documentation
+## Changing the Base URL to use Together.AI, Mistral.AI, Perplexity.AI or other compatible API
 
-| Method                 | Parameters                                     | Description                                                                                                                                                                          |
-|------------------------|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Brain::maxTokens()`   | `int $maxTokens`                               | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
-| `Brain::temperature()` | `float $temperature`                           | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
-| `Brain::fast()`        | *None*                                         | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
-| `Brain::slow()`        | *None*                                         | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
-| `Brain::text()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
-| `Brain::json()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
-| `Brain::list()`        | `$prompt, ?int $max = null, bool $fast = true` | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
-| `Brain::classify()`    | `$input, $categories`                          | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
-| `Brain::embedding()`   | `$input`                                       | Uses the `text-embedding-ada-002` model to generate an embedding vector, returns a single vector for string input, an array of vectors when passed an array or collection.           |
-| `Brain::toText()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
-| `Brain::toJson()`      | `CreateResponse $response, $fallback = null`   | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
+You can change the base URL to use other compatible APIs by using the `usingTogetherAI`, `usingMistralAI`
+or `usingPerplexity` methods.
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+Brain::usingTogetherAI()->text('Hello, world!');
+Brain::usingMistralAI()->text('Hello, world!');
+Brain::usingPerplexity()->text('Hello, world!');
+```
+
+Or you can set the base URL directly, note that the API must be compatible with OpenAI's API, specifically the Chat
+completion endpoints.
+
+Also note that JSON Mode (as used by `Brain::json`, `Brain::classify`, `Brain::embedding` and `Brain::list`) is not
+supported by all APIs.
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+Brain::baseUrl('api.example.com');
+```
+
+## 📖 Available Methods
+
+| Method                     | Parameters                                    | Description                                                                                                                                                                          |
+|----------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Brain::maxTokens()`       | `int $maxTokens`                              | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
+| `Brain::temperature()`     | `float $temperature`                          | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
+| `Brain::fast()`            | *None*                                        | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
+| `Brain::slow()`            | *None*                                        | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
+| `Brain::text()`            | `$prompt, ?int $max = null`                   | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
+| `Brain::json()`            | `$prompt, ?int $max = null`                   | Sends a prompt to the AI and returns a response in JSON format. Optionally set a custom maximum token limit for this request.                                                        |
+| `Brain::list()`            | `$prompt, ?int $max = null`                   | Sends a prompt to the AI and returns a list of items in an array, useful for generating multiple suggestions or ideas. Optionally set a custom maximum token limit for this request. |
+| `Brain::classify()`        | `$input, array\|StringBackedEnum $categories` | Classifies the given input text into one of the provided categories. Categories can be an array of strings or an Enum class.                                                         |
+| `Brain::embedding()`       | `$input`                                      | Uses the `text-embedding-ada-002` model to generate an embedding vector, returns a single vector for string input, an array of vectors when passed an array or collection.           |
+| `Brain::toText()`          | `CreateResponse $response, $fallback = null`  | Converts an OpenAI `CreateResponse` object to a text string. Includes an optional fallback value.                                                                                    |
+| `Brain::toJson()`          | `CreateResponse $response, $fallback = null`  | Converts an OpenAI `CreateResponse` object to a JSON object. Includes an optional fallback value.                                                                                    |
+| `Brain::usingTogetherAI()` | *None*                                        | Uses the [Together.AI](https://www.together.ai/) API instead of OpenAI                                                                                                               |
+| `Brain::usingMistralAI()`  | *None*                                        | Uses the [Mistral.AI](https://mistral.ai/) API instead of OpenAI                                                                                                                     |
+| `Brain::usingPerplexity()` | *None*                                        | Uses the [Perplexity.AI](https://www.perplexity.ai/) API instead of OpenAI                                                                                                           |
 
 ## 📜 License
 
