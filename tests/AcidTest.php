@@ -139,3 +139,30 @@ it('it can use an OpenAI Compatible api endpoint (perplexity.ai)', function () {
 
     expect($result)->toBeString();
 })->skip(fn () => env('PERPLEXITY_API_KEY') === null, 'No Perplexity API key found');
+
+it('it can use an OpenAI Compatible api endpoint (groq.ai)', function () {
+    config()->set('openai.api_key', env('GROQ_API_KEY'));
+
+    $result = $this->brain
+        ->usingGroq()
+        ->model('llama2-70b-4096')
+        ->temperature(0.2)
+        ->maxTokens(20)
+        ->text('Say hello');
+
+    expect($result)->toBeString();
+})->skip(fn () => env('GROQ_API_KEY') === null, 'No Groq API key found');
+
+it('It can give me JSON with Groq', function () {
+    config()->set('openai.api_key', env('GROQ_API_KEY'));
+
+    $result = $this->brain
+        ->usingGroq()
+        ->model('llama2-70b-4096')
+        ->maxTokens(200)
+        ->json('generate details for a fictional person with a name, job_title and age, output as JSON');
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveKeys(['name', 'job_title', 'age']);
+
+})->skip(fn () => env('GROQ_API_KEY') === null, 'No Groq API key found');

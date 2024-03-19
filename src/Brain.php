@@ -110,6 +110,20 @@ class Brain
         return $this;
     }
 
+    /**
+     * Use the Perplexity API.
+     *
+     * @see https://docs.perplexity.ai/docs/getting-started
+     *
+     * @return $this
+     */
+    public function usingGroq(): self
+    {
+        $this->baseUrl = 'https://api.groq.com/openai/v1';
+
+        return $this;
+    }
+
     public function client()
     {
         return OpenAI::factory()
@@ -168,6 +182,7 @@ class Brain
                 'temperature' => $this->temperature,
                 'response_format' => ['type' => 'json_object'],
                 'messages' => [
+                    ['role' => 'system', 'content' => 'Output in JSON format'],
                     ['role' => 'user', 'content' => $prompt],
                 ],
             ]);
