@@ -165,6 +165,8 @@ Brain::baseUrl('api.example.com');
 |----------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Brain::maxTokens()`       | `int $maxTokens`                              | Sets the maximum number of tokens (words) the AI response can contain.                                                                                                               |
 | `Brain::temperature()`     | `float $temperature`                          | Sets the 'temperature' for the AI responses, influencing the randomness of the output.                                                                                               |
+| `Brain::apiKey()`          | `string $apiKey`                              | Sets the API Key to use for subsequent requests.                                                                                                                                     |
+| `Brain::timeout()`         | `int $timeout`                                | Sets the request timeout in seconds.                                                                                                                                                 |
 | `Brain::fast()`            | *None*                                        | Sets the AI model to 'gpt-3.5-turbo-1106' for faster responses.                                                                                                                      |
 | `Brain::slow()`            | *None*                                        | Sets the AI model to 'gpt-4-1106-preview' for more detailed responses.                                                                                                               |
 | `Brain::text()`            | `$prompt, ?int $max = null`                   | Sends a text prompt to the AI and returns a text response. Optionally set a custom maximum token limit for this request.                                                             |
@@ -177,6 +179,21 @@ Brain::baseUrl('api.example.com');
 | `Brain::usingTogetherAI()` | *None*                                        | Uses the [Together.AI](https://www.together.ai/) API instead of OpenAI                                                                                                               |
 | `Brain::usingMistralAI()`  | *None*                                        | Uses the [Mistral.AI](https://mistral.ai/) API instead of OpenAI                                                                                                                     |
 | `Brain::usingPerplexity()` | *None*                                        | Uses the [Perplexity.AI](https://www.perplexity.ai/) API instead of OpenAI                                                                                                           |
+| `Brain::usingGroq()`       | *None*                                        | Uses the [Groq](https://console.groq.com/playground) API instead of OpenAI                                                                                                           |
+
+## Using other providers (Mistral, Together, Perplexity, Groq etc)
+
+```php
+use HelgeSverre\Brain\Facades\Brain;
+
+Brain::apiKey("api-key-from-together")->usingTogetherAI()->text('Hello, world!');
+
+Brain::apiKey("api-key-from-mistral")->usingMistralAI()->text('Hello, world!');
+
+Brain::apiKey("api-key-from-perplexity")->usingPerplexity()->text('Hello, world!');
+
+Brain::apiKey("api-key-from-groq")->usingGroq()->text('Hello, world!');
+```
 
 ## 📜 License
 

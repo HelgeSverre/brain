@@ -2,6 +2,7 @@
 
 namespace HelgeSverre\Brain;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -14,6 +15,10 @@ class Brain
     const FAST_MODEL = 'gpt-3.5-turbo-1106';
 
     const SLOW_MODEL = 'gpt-4-1106-preview';
+
+    protected ?string $apiKey = null;
+
+    protected ?int $timeout = null;
 
     protected string $model = self::FAST_MODEL;
 
@@ -51,11 +56,31 @@ class Brain
         return $this;
     }
 
+    public function apiKey(?string $apiKey = null): self
+    {
+        $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    public function timeout(?int $timeout = null): self
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated This will eventually be removed
+     */
     public function fast(): self
     {
         return $this->usingOpenAI()->model(self::FAST_MODEL);
     }
 
+    /**
+     * @deprecated This will eventually be removed
+     */
     public function slow(): self
     {
         return $this->usingOpenAI()->model(self::SLOW_MODEL);
@@ -111,9 +136,9 @@ class Brain
     }
 
     /**
-     * Use the Perplexity API.
+     * Use the Groq API.
      *
-     * @see https://docs.perplexity.ai/docs/getting-started
+     * @see https://console.groq.com/docs/quickstart
      *
      * @return $this
      */
@@ -127,11 +152,13 @@ class Brain
     public function client()
     {
         return OpenAI::factory()
-            ->withApiKey(config('openai.api_key'))
+            ->withApiKey($this->apiKey ?? config('openai.api_key'))
             ->withOrganization(config('openai.organization'))
             ->withHttpHeader('OpenAI-Beta', 'assistants=v1')
             ->withBaseUri($this->baseUrl ?: 'api.openai.com/v1')
-            ->withHttpClient(new \GuzzleHttp\Client(['timeout' => config('openai.request_timeout', 30)]))
+            ->withHttpClient(new Client([
+                'timeout' => $this->timeout ?? config('openai.request_timeout', 30),
+            ]))
             ->make();
     }
 
