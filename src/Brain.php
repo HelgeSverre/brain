@@ -28,6 +28,8 @@ class Brain
 
     protected ?string $baseUrl = null;
 
+    protected bool $throwErrors = false;
+
     public function maxTokens(int $maxTokens): self
     {
         $this->maxTokens = $maxTokens;
@@ -45,6 +47,13 @@ class Brain
     public function model(string $model): self
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    public function throw(bool $shouldThrow = true): self
+    {
+        $this->throwErrors = $shouldThrow;
 
         return $this;
     }
@@ -215,7 +224,12 @@ class Brain
             ]);
 
             return self::responseToJson($response);
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+
+            if ($this->throwErrors) {
+                throw $exception;
+            }
+
             return null;
         }
     }
@@ -237,7 +251,12 @@ class Brain
             ]);
 
             return Arr::get(self::responseToJson($response), 'items');
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+
+            if ($this->throwErrors) {
+                throw $exception;
+            }
+
             return [];
         }
     }
@@ -280,7 +299,12 @@ class Brain
 
             return $classification;
 
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+
+            if ($this->throwErrors) {
+                throw $exception;
+            }
+
             return null;
         }
     }

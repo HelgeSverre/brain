@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "openai-php/laravel": "^v0.8.1",
+        "openai-php/laravel": "^v0.10.2",
         "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {

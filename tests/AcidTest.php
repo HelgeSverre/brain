@@ -1,7 +1,7 @@
 <?php
 
 beforeEach(function () {
-    $this->brain = new HelgeSverre\Brain\Brain();
+    $this->brain = new HelgeSverre\Brain\Brain;
 });
 
 it('It can generate text', function () {
@@ -28,6 +28,21 @@ it('It can give me json list', function () {
 
     expect($result)->toBeArray()
         ->and($result)->toHaveCount(3);
+});
+
+it('it can parse dates from plain text using gpt-4o mini', function () {
+    $result = $this->brain->model('gpt-4o-mini')
+        ->maxTokens(100)
+        ->json('Extract the start and end date from the following text and return it as a JSON object with keys "start_date" and "end_date". '.
+            'The text is: "I will be on vacation from 12. july to 20. july, 2022"'
+        );
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveKeys(['start_date', 'end_date'])
+        ->and($result['start_date'])->toBeString()->and($result['end_date'])->toBeString()
+        ->and($result['start_date'])->toEqual('2022-07-12')
+        ->and($result['end_date'])->toEqual('2022-07-20');
+
 });
 
 it('It can classify something', function () {
@@ -132,7 +147,7 @@ it('it can use an OpenAI Compatible api endpoint (perplexity.ai)', function () {
 
     $result = $this->brain
         ->usingPerplexity()
-        ->model('pplx-7b-chat')
+        ->model('llama-3.1-sonar-small-128k-online')
         ->temperature(0.2)
         ->maxTokens(20)
         ->text('Say hello');
@@ -145,7 +160,7 @@ it('it can use an OpenAI Compatible api endpoint (groq.ai)', function () {
 
     $result = $this->brain
         ->usingGroq()
-        ->model('llama2-70b-4096')
+        ->model('llama-3.2-3b-preview')
         ->temperature(0.2)
         ->maxTokens(20)
         ->text('Say hello');
@@ -158,7 +173,7 @@ it('It can give me JSON with Groq', function () {
 
     $result = $this->brain
         ->usingGroq()
-        ->model('llama2-70b-4096')
+        ->model('gemma-7b-it')
         ->maxTokens(200)
         ->json('generate details for a fictional person with a name, job_title and age, output as JSON');
 
