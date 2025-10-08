@@ -147,7 +147,7 @@ it('it can use an OpenAI Compatible api endpoint (perplexity.ai)', function () {
 
     $result = $this->brain
         ->usingPerplexity()
-        ->model('llama-3.1-sonar-small-128k-online')
+        ->model('sonar')
         ->temperature(0.2)
         ->maxTokens(20)
         ->text('Say hello');
@@ -160,7 +160,7 @@ it('it can use an OpenAI Compatible api endpoint (groq.ai)', function () {
 
     $result = $this->brain
         ->usingGroq()
-        ->model('llama-3.2-3b-preview')
+        ->model('llama-3.1-8b-instant')
         ->temperature(0.2)
         ->maxTokens(20)
         ->text('Say hello');
@@ -173,7 +173,7 @@ it('It can give me JSON with Groq', function () {
 
     $result = $this->brain
         ->usingGroq()
-        ->model('gemma-7b-it')
+        ->model('openai/gpt-oss-20b')
         ->maxTokens(200)
         ->json('generate details for a fictional person with a name, job_title and age, output as JSON');
 
