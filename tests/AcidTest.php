@@ -121,7 +121,7 @@ it('it can use an OpenAI Compatible api endpoint (together.ai)', function () {
 
     $result = $this->brain
         ->usingTogetherAI()
-        ->model('mistralai/Mixtral-8x7B-Instruct-v0.1')
+        ->model('meta-llama/Llama-3.3-70B-Instruct-Turbo')
         ->temperature(0.2)
         ->maxTokens(10)
         ->text('Say hello');
@@ -160,7 +160,7 @@ it('it can use an OpenAI Compatible api endpoint (groq.ai)', function () {
 
     $result = $this->brain
         ->usingGroq()
-        ->model('llama-3.1-8b-instant')
+        ->model('qwen/qwen3.8-27b')
         ->temperature(0.2)
         ->maxTokens(20)
         ->text('Say hello');
